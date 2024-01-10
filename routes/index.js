@@ -5,8 +5,6 @@ const databaseController = require("../controllers/databaseController");
 /* GET home page. */
 router.get('/', function(req, res, next) {
   databaseController.connect_to_database;
-  // databaseController.createDatabase;
-  
   res.render('index', { title: 'Express' });
 });
 

@@ -10,7 +10,13 @@ connection.connect((error) => {
     if (error) {
         throw error;
     }
-    console.log("connected");
+    console.log("mysql connected");
+});
+
+connection.query("CREATE DATABASE IF NOT EXISTS hris", (err) => {
+    if (err) {
+        throw err;
+    }
 });
 
 module.exports = connection;
