@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const mysql = require('mysql2');
+const addressesController = require("./../controllers/addressesController");
 
 /* 
   "/address/create"
@@ -16,9 +16,7 @@ const mysql = require('mysql2');
 */
 
 /* GET addresses listing. */
-router.get('/addresses', function(req, res, next) {
-  res.send("get all addresses.")
-});
+router.get('/addresses', addressesController.getAddresses);
 
 router.get("/address/:id", (req, res) => {
   res.send(`get address by id: ${id}`);

@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const mysql = require('mysql2');
-const { connect } = require('.');
-
+const contactsController = require("./../controllers/contactsController")
 /* 
   "/contacts/create"
     * 'post' to add new contacts
@@ -17,23 +15,21 @@ const { connect } = require('.');
 */
 
 /* GET contacts listing. */
-router.get('/contacts', function(req, res, next) {
-  res.send("get all contacts.")
+router.get('/contacts', contactsController.getContacts);
+
+router.get("/contact/:id", (req, res) => {
+  res.send(`get contact by id: ${id}`);
 });
 
-router.get("/contacts/:id", (req, res) => {
-  res.send(`get contacts by id: ${id}`);
+router.post("/contact/create", (req, res) => {
+  res.send("add new contact request!");
 });
 
-router.post("/contacts/create", (req, res) => {
-  res.send("add new contacts request!");
-});
-
-router.post("/contacts/:id/update", (req, res) => {
-  res.send("edit contacts details!");
+router.post("/contact/:id/update", (req, res) => {
+  res.send("edit contact details!");
 })
 
-router.post("/contacts/:id/delete", (req, res) => {
+router.post("/contact/:id/delete", (req, res) => {
   res.send(`delete ${req.params.id}`);
 })
 

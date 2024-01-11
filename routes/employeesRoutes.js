@@ -3,7 +3,7 @@ var router = express.Router();
 const employeesController = require("./../controllers/employeesController");
 
 /* GET employees listing. */
-router.get('/', employeesController.getEmployees);
+router.get('/employees', employeesController.getEmployees);
 /* GET employee details */
 router.get("/employee/:id", employeesController.getEmployee);
 /* POST create new employee */

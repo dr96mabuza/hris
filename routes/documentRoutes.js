@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const mysql = require('mysql2');
+const documentsController = require("./../controllers/documentsController");
 
 /* 
   "/document/create"
@@ -16,9 +16,7 @@ const mysql = require('mysql2');
 */
 
 /* GET documents listing. */
-router.get('/documents', function(req, res, next) {
-  res.send("get all documents.")
-});
+router.get('/documents', documentsController.getDocuments);
 
 router.get("/document/:id", (req, res) => {
   res.send(`get document by id: ${id}`);

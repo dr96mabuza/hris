@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const mysql = require('mysql2');
-const { connect } = require('.');
+const leaveController = require("./../controllers/leaveManangementController");
 
 /* 
   "/leave/create"
@@ -17,9 +16,7 @@ const { connect } = require('.');
 */
 
 /* GET leaves listing. */
-router.get('/leaves', function(req, res, next) {
-  res.send("get all leaves.")
-});
+router.get('/leaves', leaveController.getLeaves);
 
 router.get("/leave/:id", (req, res) => {
   res.send(`get leave by id: ${id}`);

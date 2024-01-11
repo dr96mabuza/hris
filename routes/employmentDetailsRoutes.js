@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const mysql = require('mysql2');
-const { connect } = require('.');
+const employmentDetailsController = require("./../controllers/employmentDetailsController");
 
 /* 
   "/employmentdetail/create"
@@ -17,9 +16,7 @@ const { connect } = require('.');
 */
 
 /* GET employmentdetails listing. */
-router.get('/employmentdetails', function(req, res, next) {
-  res.send("get all employmentdetails.")
-});
+router.get('/employmentdetails', employmentDetailsController.getEmploymentDetails);
 
 router.get("/employmentdetail/:id", (req, res) => {
   res.send(`get employmentdetail by id: ${id}`);
