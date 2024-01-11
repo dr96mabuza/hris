@@ -20,6 +20,7 @@ router.get('/', function(req, res, next) {
       if (error) {
         res.send(error);
       }
+      connection.end();
       res.json(rows);
     });
   });
