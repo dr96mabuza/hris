@@ -5,7 +5,7 @@ exports.getLeaves = (req, res) => {
         if (error) {
             res.send(error);
         };
-        res.json(rows);
+        res.json({status: "ok", result: rows});
     });
 };
 
@@ -15,14 +15,14 @@ exports.createLeave = (req, res, next) => {
         `values( '${req.body.leaveBalance}', '${req.body.daysAbsent}',  ${req.body.employeeId})`;
     connection.query(query, (error, results) => {
         if (error) next(err);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.getLeave = (req, res, next) => {
     connection.query(`select * from leaveManagement where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
@@ -36,13 +36,13 @@ exports.updateLeave = (req, res, next) => {
     
     connection.query(queryString, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.deleteLeave = (req, res, next) => {
     connection.query(`delete from leaveManagement where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 }

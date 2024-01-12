@@ -5,7 +5,7 @@ exports.getEmploymentDetails = (req, res) => {
         if (error) {
             res.send(error);
         };
-        res.json(rows);
+        res.json({status: "ok", result: rows});
     });
 };
 
@@ -16,14 +16,14 @@ exports.createEmploymentDetail = (req, res, next) => {
         `'${req.body.employmentStatus}', ${req.body.startDate}, ${req.body.employeeId})`;
     connection.query(query, (error, results) => {
         if (error) next(err);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.getEmploymentDetail = (req, res, next) => {
     connection.query(`select * from employmentDetails where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
@@ -38,13 +38,13 @@ exports.updateEmploymentDetail = (req, res, next) => {
     
     connection.query(queryString, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.deleteEmploymentDetail = (req, res, next) => {
     connection.query(`delete from employmentDetails where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 }

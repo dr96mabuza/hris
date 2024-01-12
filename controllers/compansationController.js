@@ -3,7 +3,7 @@ const connection = require("../database");
 exports.getCompansations = (req, res, next) => {
     connection.query("select * from compansation", (error, rows, fields) => {
         if (error) next(error);
-        res.json(rows);
+        res.json({status: "ok", result: rows});
     });
 };
 
@@ -14,14 +14,14 @@ exports.createCompansation = (req, res, next) => {
         ` ${req.body.employeeId})`;
     connection.query(query, (error, results) => {
         if (error) next(err);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.getCompansation = (req, res, next) => {
     connection.query(`select * from compansation where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
@@ -34,13 +34,13 @@ exports.updateCompansation = (req, res, next) => {
 
     connection.query(queryString, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.deleteCompansation = (req, res, next) => {
     connection.query(`delete from compansation where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 }

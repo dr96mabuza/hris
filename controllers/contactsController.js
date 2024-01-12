@@ -3,7 +3,7 @@ const connection = require("../database");
 exports.getContacts = (req, res, next) => {
     connection.query("select * from contacts", (error, rows, fields) => {
         if (error) next(error);
-        res.json(rows);
+        res.json({status: "ok", result: rows});
     });
 };
 
@@ -14,14 +14,14 @@ exports.createContact = (req, res, next) => {
         `'${req.body.alternateNumber}', ${req.body.employeeId})`;
     connection.query(query, (error, results) => {
         if (error) next(err);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.getContact = (req, res, next) => {
     connection.query(`select * from contacts where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
@@ -36,13 +36,13 @@ exports.updateContact = (req, res, next) => {
     
     connection.query(queryString, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.deleteContact = (req, res, next) => {
     connection.query(`delete from contacts where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };

@@ -5,7 +5,7 @@ exports.getDocuments = (req, res) => {
         if (error) {
             res.send(error);
         };
-        res.json(rows);
+        res.json({status: "ok", result: rows});
     });
 };
 
@@ -15,14 +15,14 @@ exports.createDocument = (req, res, next) => {
         `values( '${req.body.documentName}', ${req.body.document},  ${req.body.employeeId})`;
     connection.query(query, (error, results) => {
         if (error) next(err);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.getDocument = (req, res, next) => {
     connection.query(`select * from documents where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
@@ -34,13 +34,13 @@ exports.updateDocument = (req, res, next) => {
     
     connection.query(queryString, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.deleteDocument = (req, res, next) => {
     connection.query(`delete from documents where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 }

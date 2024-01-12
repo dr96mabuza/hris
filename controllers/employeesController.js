@@ -3,7 +3,7 @@ const connection = require("./../database");
 exports.getEmployees = (req, res, next) => {
     connection.query("select * from employees", (error, rows, fields) => {
         if (error) next(error);
-        res.json(rows);
+        res.json({status: "ok", result: rows});
     });
 };
 
@@ -14,14 +14,14 @@ exports.createEmployee = (req, res, next) => {
         `'${req.body.gender}', ${req.body.dateOfBirth}, ${req.body.passwordSalt})`;
     connection.query(query, (error, results) => {
         if (error) next(err);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.getEmployee = (req, res, next) => {
     connection.query(`select * from employees where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
@@ -38,13 +38,13 @@ exports.updateEmployee = (req, res, next) => {
     
     connection.query(queryString, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 };
 
 exports.deleteEmployee = (req, res, next) => {
     connection.query(`delete from employees where id = ${req.params.id}`, (error, results) => {
         if (error) next(error);
-        res.json(results);
+        res.json({status: "ok", result: results});
     });
 }

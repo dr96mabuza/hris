@@ -10,7 +10,8 @@ const connection = mysql.createConnection({
 
 connection.connect((error) => {
     if (error instanceof Error) {
-        res.json(error);
+        console.log(error);
+        return;
     }
 });
 
