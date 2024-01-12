@@ -18,20 +18,12 @@ const addressesController = require("./../controllers/addressesController");
 /* GET addresses listing. */
 router.get('/addresses', addressesController.getAddresses);
 
-router.get("/address/:id", (req, res) => {
-  res.send(`get address by id: ${id}`);
-});
+router.get("/address/:id", addressesController.getAddress);
 
-router.post("/address/create", (req, res) => {
-  res.send("add new address request!");
-});
+router.post("/address/create", addressesController.createAddress);
 
-router.post("/address/:id/update", (req, res) => {
-  res.send("edit address details!");
-})
+router.post("/address/:id/update", addressesController.updateAddress);
 
-router.post("/address/:id/delete", (req, res) => {
-  res.send(`delete ${req.params.id}`);
-})
+router.post("/address/:id/delete", addressesController.deleteAddress);
 
 module.exports = router;

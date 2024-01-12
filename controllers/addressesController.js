@@ -10,16 +10,10 @@ exports.getAddresses = (req, res) => {
 };
 
 exports.createAddress = (req, res) => {
-    const query = "insert into addresses" +
-        "(street, suburb, city, province, postalCode, employeeId)" +
-        `values(
-            ${req.body.street}, 
-            ${req.body.suburb}, 
-            ${req.body.city}, 
-            ${req.body.province}, 
-            ${req.body.postalCode}, 
-            ${req.body.employeeId}
-        )`;
+    const query = "insert into addresses " +
+        "(street, suburb, city, province, postalCode, employeeId) " +
+        `values( '${req.body.street}', '${req.body.suburb}', '${req.body.city}', `  +
+        `'${req.body.province}', ${req.body.postalCode}, ${req.body.employeeId})`;
     connection.query(query, (error, results) => {
         if (error) {
             res.send(error);
@@ -29,6 +23,7 @@ exports.createAddress = (req, res) => {
 };
 
 exports.getAddress = (req, res) => {
+    // res.send(`id: ${req.params.id}`);
     connection.query(`select * from addresses where id = ${req.params.id}`, (error, results) => {
         if (error) {
             res.send(error);
@@ -38,25 +33,21 @@ exports.getAddress = (req, res) => {
 };
 
 exports.updateAddress = (req, res) => {
-    connection.query(`select * from addresses where id = ${req.params.id}`, (error, results) => {
+    
+    const queryString = "update addresses " +
+        `set street="${req.body.street}", ` + 
+        `suburb="${req.body.suburb}", ` + 
+        `city="${req.body.city}", ` + 
+        `province="${req.body.province}", ` + 
+        `postalCode=${req.body.postalCode}, ` + 
+        `employeeId=${req.body.employeeId} ` +
+        `where id = ${req.params.id}`;
+    
+    connection.query(queryString, (error, results) => {
         if (error) {
             res.send(error);
         };
-        
-        for (const key in results) {
-            if (results[key] !== req.body[key]) {
-                const queryString = "update addresses "
-                    `set ${key}=${req.body[key]} ` +
-                    `where id = ${req.params.id}`;
-                connection.query(queryString, (error, rows, fields) => {
-                    if (error) {
-                        res.send(error);
-                    };
-                    res.json(rows);
-                });
-            };
-        };
-
+        res.json(results);
     });
 
 };
