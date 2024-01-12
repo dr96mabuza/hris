@@ -1,26 +1,48 @@
 const connection = require("../database");
 
-exports.getContacts = (req, res) => {
+exports.getContacts = (req, res, next) => {
     connection.query("select * from contacts", (error, rows, fields) => {
-        if (error) {
-            res.send(error);
-        };
+        if (error) next(error);
         res.json(rows);
     });
 };
 
-exports.createContact = (req, res) => {
-    res.send("create new Contact request!");
+exports.createContact = (req, res, next) => {
+    const query = "insert into contacts " +
+        "(email, cellphone, companyEmail, alternateNumber, employeeId) " +
+        `values( '${req.body.email}', '${req.body.cellphone}', '${req.body.companyEmail}', `  +
+        `'${req.body.alternateNumber}', ${req.body.employeeId})`;
+    connection.query(query, (error, results) => {
+        if (error) next(err);
+        res.json(results);
+    });
 };
 
-exports.getContact = (req, res) => {
-    res.send(`get Contact by id: ${id}`);
+exports.getContact = (req, res, next) => {
+    connection.query(`select * from contacts where id = ${req.params.id}`, (error, results) => {
+        if (error) next(error);
+        res.json(results);
+    });
 };
 
-exports.updateContact = (req, res) => {
-    res.send("edit Contact details!");
+exports.updateContact = (req, res, next) => {
+    const queryString = "update contacts " +
+        `set email="${req.body.email}", ` + 
+        `cellphone="${req.body.cellphone}", ` + 
+        `companyEmail="${req.body.companyEmail}", ` + 
+        `alternateNumber="${req.body.alternateNumber}", ` +
+        `employeeId=${req.body.employeeId} ` +
+        `where id = ${req.params.id}`;
+    
+    connection.query(queryString, (error, results) => {
+        if (error) next(error);
+        res.json(results);
+    });
 };
 
-exports.deleteContact = (req, res) => {
-    res.send(`delete ${req.params.id}`);
-}
+exports.deleteContact = (req, res, next) => {
+    connection.query(`delete from contacts where id = ${req.params.id}`, (error, results) => {
+        if (error) next(error);
+        res.json(results);
+    });
+};

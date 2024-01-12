@@ -1,26 +1,46 @@
 const connection = require("../database");
 
-exports.getCompansations = (req, res) => {
+exports.getCompansations = (req, res, next) => {
     connection.query("select * from compansation", (error, rows, fields) => {
-        if (error) {
-            res.send(error);
-        };
+        if (error) next(error);
         res.json(rows);
     });
 };
 
-exports.createCompansation = (req, res) => {
-    res.send("create new Compansation request!");
+exports.createCompansation = (req, res, next) => {
+    const query = "insert into compansation " +
+        "(salary, deductions, bonus, employeeId) " +
+        `values( ${req.body.salary}, ${req.body.deductions}, ${req.body.bonus}, `  +
+        ` ${req.body.employeeId})`;
+    connection.query(query, (error, results) => {
+        if (error) next(err);
+        res.json(results);
+    });
 };
 
-exports.getCompansation = (req, res) => {
-    res.send(`get Compansation by id: ${id}`);
+exports.getCompansation = (req, res, next) => {
+    connection.query(`select * from compansation where id = ${req.params.id}`, (error, results) => {
+        if (error) next(error);
+        res.json(results);
+    });
 };
 
-exports.updateCompansation = (req, res) => {
-    res.send("edit Compansation details!");
+exports.updateCompansation = (req, res, next) => {
+    const queryString = "update compansation " +
+        `set salary=${req.body.salary}, ` + 
+        `deductions=${req.body.deductions}, ` + 
+        `bonus=${req.body.bonus}, ` + 
+        `where id = ${req.params.id}`;
+
+    connection.query(queryString, (error, results) => {
+        if (error) next(error);
+        res.json(results);
+    });
 };
 
-exports.deleteCompansation = (req, res) => {
-    res.send(`delete ${req.params.id}`);
+exports.deleteCompansation = (req, res, next) => {
+    connection.query(`delete from compansation where id = ${req.params.id}`, (error, results) => {
+        if (error) next(error);
+        res.json(results);
+    });
 }

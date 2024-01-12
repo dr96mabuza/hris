@@ -33,6 +33,10 @@ app.use('/',
     ]
 );
 
+app.use((err, req, res) => {
+    res.json({status: "error", message: {err}});
+});
+
 app.listen(5000, () => {
     console.log("server up and running on port 5000!");
 });

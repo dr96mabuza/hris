@@ -18,20 +18,12 @@ const leaveController = require("./../controllers/leaveManangementController");
 /* GET leaves listing. */
 router.get('/leaves', leaveController.getLeaves);
 
-router.get("/leave/:id", (req, res) => {
-  res.send(`get leave by id: ${id}`);
-});
+router.get("/leave/:id", leaveController.getLeave);
 
-router.post("/leave/create", (req, res) => {
-  res.send("add new leave request!");
-});
+router.post("/leave/create", leaveController.createLeave);
 
-router.post("/leave/:id/update", (req, res) => {
-  res.send("edit leave details!");
-})
+router.post("/leave/:id/update", leaveController.updateLeave);
 
-router.post("/leave/:id/delete", (req, res) => {
-  res.send(`delete ${req.params.id}`);
-})
+router.post("/leave/:id/delete", leaveController.deleteLeave);
 
 module.exports = router;

@@ -1,38 +1,31 @@
 const connection = require("./../database");
 
-exports.getAddresses = (req, res) => {
+exports.getAddresses = (req, res, next) => {
     connection.query("select * from addresses", (error, rows, fields) => {
-        if (error) {
-            res.send(error);
-        };
+        if (error) next(error)
         res.json(rows);
     });
 };
 
-exports.createAddress = (req, res) => {
+exports.createAddress = (req, res, next) => {
     const query = "insert into addresses " +
         "(street, suburb, city, province, postalCode, employeeId) " +
         `values( '${req.body.street}', '${req.body.suburb}', '${req.body.city}', `  +
         `'${req.body.province}', ${req.body.postalCode}, ${req.body.employeeId})`;
     connection.query(query, (error, results) => {
-        if (error) {
-            res.send(error);
-        };
+        if (error) next(err);
         res.json(results);
     });
 };
 
-exports.getAddress = (req, res) => {
-    // res.send(`id: ${req.params.id}`);
+exports.getAddress = (req, res, next) => {
     connection.query(`select * from addresses where id = ${req.params.id}`, (error, results) => {
-        if (error) {
-            res.send(error);
-        };
+        if (error) next(error);
         res.json(results);
     });
 };
 
-exports.updateAddress = (req, res) => {
+exports.updateAddress = (req, res, next) => {
     
     const queryString = "update addresses " +
         `set street="${req.body.street}", ` + 
@@ -44,19 +37,15 @@ exports.updateAddress = (req, res) => {
         `where id = ${req.params.id}`;
     
     connection.query(queryString, (error, results) => {
-        if (error) {
-            res.send(error);
-        };
+        if (error) next(error);
         res.json(results);
     });
 
 };
 
-exports.deleteAddress = (req, res) => {
+exports.deleteAddress = (req, res, next) => {
     connection.query(`delete from addresses where id = ${req.params.id}`, (error, results) => {
-        if (error) {
-            res.send(error);
-        };
+        if (error) next(error);
         res.json(results);
     });
 };

@@ -18,20 +18,12 @@ const employmentDetailsController = require("./../controllers/employmentDetailsC
 /* GET employmentdetails listing. */
 router.get('/employmentdetails', employmentDetailsController.getEmploymentDetails);
 
-router.get("/employmentdetail/:id", (req, res) => {
-  res.send(`get employmentdetail by id: ${id}`);
-});
+router.get("/employmentdetail/:id", employmentDetailsController.getEmploymentDetail);
 
-router.post("/employmentdetail/create", (req, res) => {
-  res.send("add new employmentdetail request!");
-});
+router.post("/employmentdetail/create", employmentDetailsController.createEmploymentDetail);
 
-router.post("/employmentdetail/:id/update", (req, res) => {
-  res.send("edit employmentdetail details!");
-})
+router.post("/employmentdetail/:id/update", employmentDetailsController.updateEmploymentDetail)
 
-router.post("/employmentdetail/:id/delete", (req, res) => {
-  res.send(`delete ${req.params.id}`);
-})
+router.post("/employmentdetail/:id/delete", employmentDetailsController.deleteEmploymentDetail)
 
 module.exports = router;

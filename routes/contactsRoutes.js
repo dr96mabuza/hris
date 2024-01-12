@@ -17,20 +17,12 @@ const contactsController = require("./../controllers/contactsController")
 /* GET contacts listing. */
 router.get('/contacts', contactsController.getContacts);
 
-router.get("/contact/:id", (req, res) => {
-  res.send(`get contact by id: ${id}`);
-});
+router.get("/contact/:id", contactsController.getContact);
 
-router.post("/contact/create", (req, res) => {
-  res.send("add new contact request!");
-});
+router.post("/contact/create", contactsController.createContact);
 
-router.post("/contact/:id/update", (req, res) => {
-  res.send("edit contact details!");
-})
+router.post("/contact/:id/update", contactsController.updateContact);
 
-router.post("/contact/:id/delete", (req, res) => {
-  res.send(`delete ${req.params.id}`);
-})
+router.post("/contact/:id/delete", contactsController.deleteContact)
 
 module.exports = router;

@@ -18,20 +18,12 @@ const compansationController = require("../controllers/compansationController");
 /* GET compansations listing. */
 router.get('/compansations', compansationController.getCompansations);
 
-router.get("/compansation/:id", (req, res) => {
-  res.send(`get compansation by id: ${id}`);
-});
+router.get("/compansation/:id", compansationController.getCompansation);
 
-router.post("/compansation/create", (req, res) => {
-  res.send("add new compansation request!");
-});
+router.post("/compansation/create", compansationController.createCompansation);
 
-router.post("/compansation/:id/update", (req, res) => {
-  res.send("edit compansation details!");
-})
+router.post("/compansation/:id/update", compansationController.updateCompansation);
 
-router.post("/compansation/:id/delete", (req, res) => {
-  res.send(`delete ${req.params.id}`);
-})
+router.post("/compansation/:id/delete", compansationController.deleteCompansation);
 
 module.exports = router;
