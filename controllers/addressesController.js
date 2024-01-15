@@ -2,7 +2,12 @@ const connection = require("./../database");
 
 exports.getAddresses = (req, res, next) => {
     connection.query("select * from addresses", (error, rows, fields) => {
-        if (error) next(error)
+        if (error) {
+            connection.connect((error) => {
+                res.json({status: "error", result: error});
+            })
+            res.json({status: "error", result: error});
+        }
         res.json({status: "ok", result: rows});
     });
 };
@@ -13,14 +18,24 @@ exports.createAddress = (req, res, next) => {
         `values( '${req.body.street}', '${req.body.suburb}', '${req.body.city}', `  +
         `'${req.body.province}', ${req.body.postalCode}, ${req.body.employeeId})`;
     connection.query(query, (error, results) => {
-        if (error) next(err);
+        if (error) {
+            connection.connect((error) => {
+                res.json({status: "error", result: error});
+            })
+            res.json({status: "error", result: error})
+        };
         res.json({status: "ok", result: results});
     });
 };
 
 exports.getAddress = (req, res, next) => {
     connection.query(`select * from addresses where id = ${req.params.id}`, (error, results) => {
-        if (error) next(error);
+        if (error) {
+            connection.connect((error) => {
+                res.json({status: "error", result: error});
+            })
+            res.json({status: "error", result: error})
+        };
         res.json({status: "ok", result: results});
     });
 };
@@ -28,16 +43,20 @@ exports.getAddress = (req, res, next) => {
 exports.updateAddress = (req, res, next) => {
     
     const queryString = "update addresses " +
-        `set street="${req.body.street}", ` + 
-        `suburb="${req.body.suburb}", ` + 
-        `city="${req.body.city}", ` + 
-        `province="${req.body.province}", ` + 
+        `set street='${req.body.street}', ` + 
+        `suburb='${req.body.suburb}', ` + 
+        `city='${req.body.city}', ` + 
+        `province='${req.body.province}', ` + 
         `postalCode=${req.body.postalCode}, ` + 
-        `employeeId=${req.body.employeeId} ` +
+        // `employeeId=${req.body.employeeId} ` +
         `where id = ${req.params.id}`;
-    
     connection.query(queryString, (error, results) => {
-        if (error) next(error);
+        if (error) {
+            connection.connect((error) => {
+                res.json({status: "error", result: error});
+            })
+            res.json({status: "error", result: error})
+        };
         res.json({status: "ok", result: results});
     });
 
@@ -45,7 +64,12 @@ exports.updateAddress = (req, res, next) => {
 
 exports.deleteAddress = (req, res, next) => {
     connection.query(`delete from addresses where id = ${req.params.id}`, (error, results) => {
-        if (error) next(error);
+        if (error) {
+            connection.connect((error) => {
+                res.json({status: "error", result: error});
+            })
+            res.json({status: "error", result: error})
+        };
         res.json({status: "ok", result: results});
     });
 };

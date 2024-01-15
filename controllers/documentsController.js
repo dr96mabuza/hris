@@ -21,26 +21,26 @@ exports.createDocument = (req, res, next) => {
 
 exports.getDocument = (req, res, next) => {
     connection.query(`select * from documents where id = ${req.params.id}`, (error, results) => {
-        if (error) next(error);
+        if (error) res.json({status: "error", result: error});
         res.json({status: "ok", result: results});
     });
 };
 
 exports.updateDocument = (req, res, next) => {
     const queryString = "update documents " +
-        `set documentName="${req.body.documentName}", ` + 
+        `set documentName='${req.body.documentName}', ` + 
         `document=${req.body.document}, ` + 
         `where id = ${req.params.id}`;
     
     connection.query(queryString, (error, results) => {
-        if (error) next(error);
+        if (error) res.json({status: "error", result: error});
         res.json({status: "ok", result: results});
     });
 };
 
 exports.deleteDocument = (req, res, next) => {
     connection.query(`delete from documents where id = ${req.params.id}`, (error, results) => {
-        if (error) next(error);
+        if (error) res.json({status: "error", result: error});
         res.json({status: "ok", result: results});
     });
 }
