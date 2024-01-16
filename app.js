@@ -2,7 +2,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const cors = require('cors')
+const cors = require('cors');
+import serverless from "serverless-http";
 
 var indexRouter = require('./routes/index');
 var employeesRouter = require('./routes/employeesRoutes');
@@ -48,4 +49,5 @@ app.listen(5000, () => {
     console.log("server up and running on port 5000!");
 });
 
+export const handler = serverless(app);
 module.exports = app;
