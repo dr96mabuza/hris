@@ -29,8 +29,8 @@ exports.updateCompansation = (req, res, next) => {
     const queryString = "update compansation " +
         `set salary=${req.body.salary}, ` + 
         `deductions=${req.body.deductions}, ` + 
-        `bonus=${req.body.bonus}, ` + 
-        `where id = ${req.params.id}`;
+        `bonus=${req.body.bonus} ` + 
+        `where id=${req.params.id}`;
 
     connection.query(queryString, (error, results) => {
         if (error) res.json({status: "error", result: error});

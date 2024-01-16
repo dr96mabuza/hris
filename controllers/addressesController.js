@@ -47,8 +47,7 @@ exports.updateAddress = (req, res, next) => {
         `suburb='${req.body.suburb}', ` + 
         `city='${req.body.city}', ` + 
         `province='${req.body.province}', ` + 
-        `postalCode=${req.body.postalCode}, ` + 
-        // `employeeId=${req.body.employeeId} ` +
+        `postalCode=${req.body.postalCode} ` + 
         `where id = ${req.params.id}`;
     connection.query(queryString, (error, results) => {
         if (error) {

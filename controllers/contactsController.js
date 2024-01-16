@@ -28,10 +28,9 @@ exports.getContact = (req, res, next) => {
 exports.updateContact = (req, res, next) => {
     const queryString = "update contacts " +
         `set email='${req.body.email}', ` + 
-        `cellphone='${req.body.cellphone}', ` + 
+        `cellphoneNumber='${req.body.cellphoneNumber}', ` + 
         `companyEmail='${req.body.companyEmail}', ` + 
-        `alternateNumber='${req.body.alternateNumber}', ` +
-        `employeeId=${req.body.employeeId} ` +
+        `alternateNumber='${req.body.alternateNumber}' ` +
         `where id = ${req.params.id}`;
     
     connection.query(queryString, (error, results) => {

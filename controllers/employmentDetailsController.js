@@ -29,12 +29,10 @@ exports.getEmploymentDetail = (req, res, next) => {
 
 exports.updateEmploymentDetail = (req, res, next) => {
     const queryString = "update employmentDetails " +
-        `set company="${req.body.company}", ` + 
-        `jobRole="${req.body.jobRole}", ` + 
+        `set company='${req.body.company}', ` + 
+        `jobRole='${req.body.jobRole}', ` + 
         `reportsTo=${req.body.reportsTo}, ` + 
-        `employmentStatus="${req.body.employmentStatus}", ` + 
-        `startDate=${req.body.startDate}, ` + 
-        `employeeId=${req.body.employeeId} ` +
+        `employmentStatus='${req.body.employmentStatus}' ` +
         `where id = ${req.params.id}`;
     
     connection.query(queryString, (error, results) => {

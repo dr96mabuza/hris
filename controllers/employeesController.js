@@ -14,7 +14,7 @@ exports.createEmployee = (req, res, next) => {
     const query = "insert into employees " +
         "(firstName, lastName, idNumber, gender, dateOfBirth, passwordSalt) " +
         `values( '${req.body.firstName}', '${req.body.lastName}', '${req.body.idNumber}', `  +
-        `'${req.body.gender}', ${req.body.dateOfBirth}, ${req.body.passwordSalt})`;
+        `'${req.body.gender}', '${req.body.dateOfBirth}', '${req.body.passwordSalt}')`;
     connection.connect((error) => {
         if (error) {res.json({status: "error", result: error})};
         connection.query(query, (error, results) => {
@@ -41,8 +41,7 @@ exports.updateEmployee = (req, res, next) => {
         `lastName='${req.body.lastName}', ` + 
         `idNumber='${req.body.idNumber}', ` + 
         `gender='${req.body.gender}', ` + 
-        `dateOfBirth=${req.body.dateOfBirth}, ` + 
-        `passwordSalt=${req.body.passwordSalt} ` +
+        `dateOfBirth=${req.body.dateOfBirth} ` + 
         `where id = ${req.params.id}`;
     
     connection.connect((error) => {
