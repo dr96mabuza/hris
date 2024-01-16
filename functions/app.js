@@ -5,14 +5,14 @@ var logger = require('morgan');
 const cors = require('cors');
 import serverless from "serverless-http";
 
-var indexRouter = require('./routes/index');
-var employeesRouter = require('./routes/employeesRoutes');
-const addressesRouter = require('./routes/addressesRoutes');
-const compansationRouter = require('./routes/compansationRoutes');
-const contactsRouter = require('./routes/contactsRoutes');
-const documentsRouter = require('./routes/documentRoutes');
-const employmentDetailsRouter = require('./routes/employmentDetailsRoutes');
-const leaveRouter = require('./routes/leaveRoutes');
+var indexRouter = require('../routes/index');
+var employeesRouter = require('../routes/employeesRoutes');
+const addressesRouter = require('../routes/addressesRoutes');
+const compansationRouter = require('../routes/compansationRoutes');
+const contactsRouter = require('../routes/contactsRoutes');
+const documentsRouter = require('../routes/documentRoutes');
+const employmentDetailsRouter = require('../routes/employmentDetailsRoutes');
+const leaveRouter = require('../routes/leaveRoutes');
 
 var app = express();
 
@@ -50,4 +50,4 @@ app.listen(5000, () => {
 });
 
 export const handler = serverless(app);
-module.exports = app;
+// module.exports = app;
