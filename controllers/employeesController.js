@@ -28,7 +28,7 @@ exports.getEmployee = (req, res, next) => {
     connection.connect((error) => {
         if (error) {res.json({status: "error", result: error})};
         connection.query(`select * from employees where id = ${req.params.id}`, (error, results) => {
-            if (error) res.json({status: "error", result: error});;
+            if (error) res.json({status: "error", result: error});
             res.json({status: "ok", result: results});
         });
     })

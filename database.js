@@ -15,6 +15,11 @@ connection.connect((error) => {
     }
 });
 
-
+// connection.query("alter table documents add type varchar(255)", (error, results) => {
+//     if (error) {
+//         console.log(error)
+//     }
+//     console.log(results)
+// })
 
 module.exports = connection;
