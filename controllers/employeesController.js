@@ -42,13 +42,6 @@ exports.getEmployee = (req, res, next) => {
       `select * from employees where id = ${req.params.id}`,
       (error, results) => {
         if (error) res.json({ status: "error", result: error });
-        if (results.length > 0) {
-          for (const key in results[0]) {
-            if (key === "dateOfBirth") {
-              results[0][key] = dateFormarter.ISOToDate(results[0][key]);
-            }
-          }
-        }
         res.json({ status: "ok", result: results });
       },
     );
