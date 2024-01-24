@@ -1,6 +1,6 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const contactsController = require("./../controllers/contactsController")
+const contactsController = require("./../controllers/contactsController");
 /* 
   "/contacts/create"
     * 'post' to add new contacts
@@ -15,7 +15,7 @@ const contactsController = require("./../controllers/contactsController")
 */
 
 /* GET contacts listing. */
-router.get('/contacts', contactsController.getContacts);
+router.get("/contacts", contactsController.getContacts);
 
 router.get("/contact/:id", contactsController.getContact);
 
@@ -23,6 +23,6 @@ router.post("/contact/create", contactsController.createContact);
 
 router.post("/contact/:id/update", contactsController.updateContact);
 
-router.post("/contact/:id/delete", contactsController.deleteContact)
+router.post("/contact/:id/delete", contactsController.deleteContact);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 const documentsController = require("./../controllers/documentsController");
 
@@ -16,7 +16,7 @@ const documentsController = require("./../controllers/documentsController");
 */
 
 /* GET documents listing. */
-router.get('/documents', documentsController.getDocuments);
+router.get("/documents", documentsController.getDocuments);
 
 router.get("/document/:id", documentsController.getDocument);
 

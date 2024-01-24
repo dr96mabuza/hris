@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 const leaveController = require("./../controllers/leaveManangementController");
 
@@ -16,7 +16,7 @@ const leaveController = require("./../controllers/leaveManangementController");
 */
 
 /* GET leaves listing. */
-router.get('/leaves', leaveController.getLeaves);
+router.get("/leaves", leaveController.getLeaves);
 
 router.get("/leave/:id", leaveController.getLeave);
 

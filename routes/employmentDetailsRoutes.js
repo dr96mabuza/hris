@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 const employmentDetailsController = require("./../controllers/employmentDetailsController");
 
@@ -16,14 +16,29 @@ const employmentDetailsController = require("./../controllers/employmentDetailsC
 */
 
 /* GET employmentdetails listing. */
-router.get('/employmentdetails', employmentDetailsController.getEmploymentDetails);
+router.get(
+  "/employmentdetails",
+  employmentDetailsController.getEmploymentDetails,
+);
 
-router.get("/employmentdetail/:id", employmentDetailsController.getEmploymentDetail);
+router.get(
+  "/employmentdetail/:id",
+  employmentDetailsController.getEmploymentDetail,
+);
 
-router.post("/employmentdetail/create", employmentDetailsController.createEmploymentDetail);
+router.post(
+  "/employmentdetail/create",
+  employmentDetailsController.createEmploymentDetail,
+);
 
-router.post("/employmentdetail/:id/update", employmentDetailsController.updateEmploymentDetail)
+router.post(
+  "/employmentdetail/:id/update",
+  employmentDetailsController.updateEmploymentDetail,
+);
 
-router.post("/employmentdetail/:id/delete", employmentDetailsController.deleteEmploymentDetail)
+router.post(
+  "/employmentdetail/:id/delete",
+  employmentDetailsController.deleteEmploymentDetail,
+);
 
 module.exports = router;

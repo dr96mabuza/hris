@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 const addressesController = require("./../controllers/addressesController");
 
@@ -16,7 +16,7 @@ const addressesController = require("./../controllers/addressesController");
 */
 
 /* GET addresses listing. */
-router.get('/addresses', addressesController.getAddresses);
+router.get("/addresses", addressesController.getAddresses);
 
 router.get("/address/:id", addressesController.getAddress);
 

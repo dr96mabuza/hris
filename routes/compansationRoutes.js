@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 const compansationController = require("../controllers/compansationController");
 
@@ -16,14 +16,20 @@ const compansationController = require("../controllers/compansationController");
 */
 
 /* GET compansations listing. */
-router.get('/compansations', compansationController.getCompansations);
+router.get("/compansations", compansationController.getCompansations);
 
 router.get("/compansation/:id", compansationController.getCompansation);
 
 router.post("/compansation/create", compansationController.createCompansation);
 
-router.post("/compansation/:id/update", compansationController.updateCompansation);
+router.post(
+  "/compansation/:id/update",
+  compansationController.updateCompansation,
+);
 
-router.post("/compansation/:id/delete", compansationController.deleteCompansation);
+router.post(
+  "/compansation/:id/delete",
+  compansationController.deleteCompansation,
+);
 
 module.exports = router;
