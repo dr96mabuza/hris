@@ -1,6 +1,6 @@
 const { formatISO, format } = require("date-fns");
 
-export const date = () => {
+const date = () => {
   const dateToISO = (date) => {
     return formatISO(date);
   };
@@ -11,3 +11,5 @@ export const date = () => {
 
   return { dateToISO, ISOToDate };
 };
+
+exports.date = date;

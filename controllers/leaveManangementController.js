@@ -1,6 +1,6 @@
 const connection = require("../database");
-import { date } from "../helpers/dateHelper";
-const dateFormatter = date();
+const date = require("../helpers/dateHelper");
+const dateFormatter = date.date();
 
 exports.getLeaves = (req, res) => {
   connection.query("select * from leaves", (error, rows, fields) => {

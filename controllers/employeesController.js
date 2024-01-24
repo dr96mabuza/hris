@@ -1,6 +1,6 @@
 const connection = require("./../database");
-import { date } from "../helpers/dateHelper";
-const dateFormarter = date();
+const date = require("../helpers/dateHelper");
+const dateFormarter = date.date();
 
 exports.getEmployees = (req, res, next) => {
   connection.connect((error) => {
