@@ -1,4 +1,6 @@
 const connection = require("../database");
+const date = require("../helpers/dateHelper");
+const dateFormatter = date.date();
 
 exports.getEmploymentDetails = (req, res) => {
   connection.query("select * from employmentDetails", (error, rows, fields) => {
@@ -14,7 +16,7 @@ exports.createEmploymentDetail = (req, res, next) => {
     "insert into employmentDetails " +
     "(company, jobRole, reportsTo, employmentStatus, startDate, employeeId) " +
     `values( '${req.body.company}', '${req.body.jobRole}', '${req.body.reportsTo}', ` +
-    `'${req.body.employmentStatus}', ${req.body.startDate}, ${req.body.employeeId})`;
+    `'${req.body.employmentStatus}', ${dateFormatter.dateToISO(req.body.startDate)}, ${req.body.employeeId})`;
   connection.query(query, (error, results) => {
     if (error) return res.json({ status: "error", result: error });
     return res.json({ status: "ok", result: results });
