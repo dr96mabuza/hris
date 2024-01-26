@@ -5,11 +5,11 @@ const dateFormarter = date.date();
 exports.getEmployees = (req, res, next) => {
   connection.connect((error) => {
     if (error) {
-      res.json({ status: "error", result: error });
+      return res.json({ status: "error", result: error });
     }
     connection.query("select * from employees", (error, rows, fields) => {
-      if (error) res.json({ status: "error", result: error });
-      res.json({ status: "ok", result: rows });
+      if (error) return res.json({ status: "error", result: error });
+      return res.json({ status: "ok", result: rows });
     });
   });
 };
@@ -22,13 +22,13 @@ exports.createEmployee = (req, res, next) => {
     `'${req.body.gender}', '${dateFormarter.dateToISO(req.body.dateOfBirth)}', '${req.body.passwordSalt}')`;
   connection.connect((error) => {
     if (error) {
-      res.json({ status: "error", result: error });
+      return res.json({ status: "error", result: error });
     }
     connection.query(query, (error, results) => {
       if (error) {
-        res.json({ status: "error", result: error });
+        return res.json({ status: "error", result: error });
       }
-      res.json({ status: "ok", result: results });
+      return res.json({ status: "ok", result: results });
     });
   });
 };
@@ -36,13 +36,13 @@ exports.createEmployee = (req, res, next) => {
 exports.getEmployee = (req, res, next) => {
   connection.connect((error) => {
     if (error) {
-      res.json({ status: "error", result: error });
+      return res.json({ status: "error", result: error });
     }
     connection.query(
       `select * from employees where id = ${req.params.id}`,
       (error, results) => {
-        if (error) res.json({ status: "error", result: error });
-        res.json({ status: "ok", result: results });
+        if (error) return res.json({ status: "error", result: error });
+        return res.json({ status: "ok", result: results });
       },
     );
   });
@@ -60,11 +60,11 @@ exports.updateEmployee = (req, res, next) => {
 
   connection.connect((error) => {
     if (error) {
-      res.json({ status: "error", result: error });
+      return res.json({ status: "error", result: error });
     }
     connection.query(queryString, (error, results) => {
-      if (error) res.json({ status: "error", result: error });
-      res.json({ status: "ok", result: results });
+      if (error) return res.json({ status: "error", result: error });
+      return res.json({ status: "ok", result: results });
     });
   });
 };
@@ -72,13 +72,13 @@ exports.updateEmployee = (req, res, next) => {
 exports.deleteEmployee = (req, res, next) => {
   connection.connect((error) => {
     if (error) {
-      res.json({ status: "error", result: error });
+      return res.json({ status: "error", result: error });
     }
     connection.query(
       `delete from employees where id = ${req.params.id}`,
       (error, results) => {
-        if (error) res.json({ status: "error", result: error });
-        res.json({ status: "ok", result: results });
+        if (error) return res.json({ status: "error", result: error });
+        return res.json({ status: "ok", result: results });
       },
     );
   });

@@ -4,11 +4,11 @@ exports.getAddresses = (req, res, next) => {
   connection.query("select * from addresses", (error, rows, fields) => {
     if (error) {
       connection.connect((error) => {
-        res.json({ status: "error", result: error });
+        return res.json({ status: "error", result: error });
       });
-      res.json({ status: "error", result: error });
+      return res.json({ status: "error", result: error });
     }
-    res.json({ status: "ok", result: rows });
+    return res.json({ status: "ok", result: rows });
   });
 };
 
@@ -21,11 +21,11 @@ exports.createAddress = (req, res, next) => {
   connection.query(query, (error, results) => {
     if (error) {
       connection.connect((error) => {
-        res.json({ status: "error", result: error });
+        return res.json({ status: "error", result: error });
       });
-      res.json({ status: "error", result: error });
+      return res.json({ status: "error", result: error });
     }
-    res.json({ status: "ok", result: results });
+    return res.json({ status: "ok", result: results });
   });
 };
 
@@ -35,11 +35,11 @@ exports.getAddress = (req, res, next) => {
     (error, results) => {
       if (error) {
         connection.connect((error) => {
-          res.json({ status: "error", result: error });
+          return res.json({ status: "error", result: error });
         });
-        res.json({ status: "error", result: error });
+        return res.json({ status: "error", result: error });
       }
-      res.json({ status: "ok", result: results });
+      return res.json({ status: "ok", result: results });
     },
   );
 };
@@ -56,11 +56,11 @@ exports.updateAddress = (req, res, next) => {
   connection.query(queryString, (error, results) => {
     if (error) {
       connection.connect((error) => {
-        res.json({ status: "error", result: error });
+        return res.json({ status: "error", result: error });
       });
-      res.json({ status: "error", result: error });
+      return res.json({ status: "error", result: error });
     }
-    res.json({ status: "ok", result: results });
+    return res.json({ status: "ok", result: results });
   });
 };
 
@@ -70,11 +70,11 @@ exports.deleteAddress = (req, res, next) => {
     (error, results) => {
       if (error) {
         connection.connect((error) => {
-          res.json({ status: "error", result: error });
+          return res.json({ status: "error", result: error });
         });
-        res.json({ status: "error", result: error });
+        return res.json({ status: "error", result: error });
       }
-      res.json({ status: "ok", result: results });
+      return res.json({ status: "ok", result: results });
     },
   );
 };

@@ -2,8 +2,8 @@ const connection = require("../database");
 
 exports.getContacts = (req, res, next) => {
   connection.query("select * from contacts", (error, rows, fields) => {
-    if (error) res.json({ status: "error", result: error });
-    res.json({ status: "ok", result: rows });
+    if (error) return res.json({ status: "error", result: error });
+    return res.json({ status: "ok", result: rows });
   });
 };
 
@@ -14,8 +14,8 @@ exports.createContact = (req, res, next) => {
     `values( '${req.body.email}', '${req.body.cellphone}', '${req.body.companyEmail}', ` +
     `'${req.body.alternateNumber}', ${req.body.employeeId})`;
   connection.query(query, (error, results) => {
-    if (error) res.json({ status: "error", result: err });
-    res.json({ status: "ok", result: results });
+    if (error) return res.json({ status: "error", result: err });
+    return res.json({ status: "ok", result: results });
   });
 };
 
@@ -23,8 +23,8 @@ exports.getContact = (req, res, next) => {
   connection.query(
     `select * from contacts where id = ${req.params.id}`,
     (error, results) => {
-      if (error) res.json({ status: "error", result: error });
-      res.json({ status: "ok", result: results });
+      if (error) return res.json({ status: "error", result: error });
+      return res.json({ status: "ok", result: results });
     },
   );
 };
@@ -39,8 +39,8 @@ exports.updateContact = (req, res, next) => {
     `where id = ${req.params.id}`;
 
   connection.query(queryString, (error, results) => {
-    if (error) res.json({ status: "error", result: error });
-    res.json({ status: "ok", result: results });
+    if (error) return res.json({ status: "error", result: error });
+    return res.json({ status: "ok", result: results });
   });
 };
 
@@ -48,8 +48,8 @@ exports.deleteContact = (req, res, next) => {
   connection.query(
     `delete from contacts where id = ${req.params.id}`,
     (error, results) => {
-      if (error) res.json({ status: "error", result: error });
-      res.json({ status: "ok", result: results });
+      if (error) return res.json({ status: "error", result: error });
+      return res.json({ status: "ok", result: results });
     },
   );
 };
