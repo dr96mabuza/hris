@@ -32,11 +32,11 @@ const fetchFileAndCreateBlob = async (pdfUrl) => {
   
 
 exports.createDocument = async (req, res, next) => {
-    const getDocumentName = req.body.document.split("\\")[-1];
+    const getDocumentName = req.body.document.split("\\").pop();
     const converted = await fetchFileAndCreateBlob(req.body.document)
     const query = "insert into documents " +
         "(documentName, document, employeeId, type) " +
-        `values( '${getDocumentName}', ${converted},  ${req.body.employeeId}), ${req.body.documentName}`;
+        `values( '${getDocumentName}', ${converted},  ${req.body.employeeId}, '${req.body.documentName}')`;
     connection.query(query, (error, results) => {
         if (error) res.json({status: "error", result: error});
         res.json({status: "ok", result: results});
