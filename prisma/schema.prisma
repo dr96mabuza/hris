@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model addresses {
+  id         Int        @id @default(autoincrement())
+  street     String     @db.VarChar(50)
+  suburb     String?    @db.VarChar(50)
+  city       String     @db.VarChar(100)
+  province   String     @db.VarChar(100)
+  postalCode Int
+  employeeId Int?
+  employees  employees? @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "addresses_ibfk_1")
+
+  @@index([employeeId], map: "employeeId")
+}
+
+model compansation {
+  id         Int        @id @default(autoincrement())
+  salary     Int
+  deductions Int
+  bonus      Int?
+  employeeId Int?
+  employees  employees? @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "compansation_ibfk_1")
+
+  @@index([employeeId], map: "employeeId")
+}
+
+model contacts {
+  id              Int        @id @default(autoincrement())
+  email           String?    @db.VarChar(50)
+  cellphoneNumber String?    @db.VarChar(50)
+  companyEmail    String?    @db.VarChar(50)
+  alternateNumber String?    @db.VarChar(50)
+  employeeId      Int?
+  employees       employees? @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contacts_ibfk_1")
+
+  @@index([employeeId], map: "employeeId")
+}
+
+model documents {
+  id           Int        @id @default(autoincrement())
+  documentName String?    @db.VarChar(255)
+  document     Bytes?     @db.Blob
+  employeeId   Int?
+  type         String?    @db.VarChar(255)
+  employees    employees? @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "documents_ibfk_1")
+
+  @@index([employeeId], map: "employeeId")
+}
+
+model employees {
+  id                                                        Int                 @id @default(autoincrement())
+  firstName                                                 String              @db.VarChar(255)
+  lastName                                                  String              @db.VarChar(255)
+  idNumber                                                  String              @db.VarChar(13)
+  gender                                                    String?             @db.VarChar(50)
+  dateOfBirth                                               String?             @db.VarChar(255)
+  passwordSalt                                              String?             @db.VarChar(255)
+  addresses                                                 addresses[]
+  compansation                                              compansation[]
+  contacts                                                  contacts[]
+  documents                                                 documents[]
+  employmentDetails_employmentDetails_reportsToToemployees  employmentDetails[] @relation("employmentDetails_reportsToToemployees")
+  employmentDetails_employmentDetails_employeeIdToemployees employmentDetails[] @relation("employmentDetails_employeeIdToemployees")
+  leaveManagement                                           leaveManagement[]
+  leaves                                                    leaves[]
+}
+
+model employmentDetails {
+  id                                                Int        @id @default(autoincrement())
+  company                                           String     @db.VarChar(255)
+  jobRole                                           String?    @db.VarChar(100)
+  reportsTo                                         Int?
+  employmentStatus                                  String?    @db.VarChar(50)
+  employeeId                                        Int?
+  startDate                                         DateTime?  @db.Date
+  employees_employmentDetails_reportsToToemployees  employees? @relation("employmentDetails_reportsToToemployees", fields: [reportsTo], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "employmentDetails_ibfk_1")
+  employees_employmentDetails_employeeIdToemployees employees? @relation("employmentDetails_employeeIdToemployees", fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "employmentDetails_ibfk_2")
+
+  @@index([employeeId], map: "employeeId")
+  @@index([reportsTo], map: "reportsTo")
+}
+
+model leaves {
+  leave_id    Int        @id @default(autoincrement())
+  leave_type  String?    @db.VarChar(255)
+  reason      String?    @db.VarChar(1000)
+  start_date  DateTime?  @db.Date
+  end_date    DateTime?  @db.Date
+  days_absent Int?
+  employee_id Int?
+  approval    Boolean?
+  employees   employees? @relation(fields: [employee_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "leaves_ibfk_1")
+
+  @@index([employee_id], map: "employee_id")
+}
