@@ -15,7 +15,8 @@ connection.connect((error) => {
   }
 });
 
-// connection.query("Alter TABLE `documents` MODIFY COLUMN `document` VARCHAR(255) "
+
+// connection.query("ALTER TABLE employees ADD username varchar(255) "
 // , (error, results) => {
 //     if (error) {
 //         console.log(error)

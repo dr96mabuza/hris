@@ -62,6 +62,7 @@ model employees {
   gender                                                    String?             @db.VarChar(50)
   dateOfBirth                                               String?             @db.VarChar(255)
   passwordSalt                                              String?             @db.VarChar(255)
+  username                                                  String?             @db.VarChar(255)
   addresses                                                 addresses[]
   compansation                                              compansation[]
   contacts                                                  contacts[]
