@@ -1,80 +1,69 @@
-const connection = require("./../database");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
-exports.getAddresses = (req, res, next) => {
-  connection.query("select * from addresses", (error, rows, fields) => {
-    if (error) {
-      connection.connect((error) => {
-        return res.json({ status: "error", result: error });
-      });
-      return res.json({ status: "error", result: error });
-    }
-    return res.json({ status: "ok", result: rows });
-  });
+exports.getAddresses = async (req, res, next) => {
+  try {
+    const addresses = await prisma.addresses.findMany();
+    return res.json({ status: "ok", result: addresses });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.createAddress = (req, res, next) => {
-  const query =
-    "insert into addresses " +
-    "(street, suburb, city, province, postalCode, employeeId) " +
-    `values( '${req.body.street}', '${req.body.suburb}', '${req.body.city}', ` +
-    `'${req.body.province}', ${req.body.postalCode}, ${req.body.employeeId})`;
-  connection.query(query, (error, results) => {
-    if (error) {
-      connection.connect((error) => {
-        return res.json({ status: "error", result: error });
-      });
-      return res.json({ status: "error", result: error });
-    }
-    return res.json({ status: "ok", result: results });
-  });
+exports.createAddress = async (req, res, next) => {
+  try {
+    const address = await prisma.addresses.create({
+      data: {
+        street: req.body.street,
+        suburb: req.body.suburb,
+        city: req.body.city,
+        province: req.body.province,
+        postalCode: req.body.postalCode,
+        employeeId: req.body.employeeId,
+      },
+    });
+    return res.json({ status: "ok", result: address });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.getAddress = (req, res, next) => {
-  connection.query(
-    `select * from addresses where id = ${req.params.id}`,
-    (error, results) => {
-      if (error) {
-        connection.connect((error) => {
-          return res.json({ status: "error", result: error });
-        });
-        return res.json({ status: "error", result: error });
-      }
-      return res.json({ status: "ok", result: results });
-    },
-  );
+exports.getAddress = async (req, res, next) => {
+  try {
+    const address = await prisma.addresses.findFirst({
+      where: { id: Number(req.params.id) },
+    });
+    return res.json({ status: "ok", result: address });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.updateAddress = (req, res, next) => {
-  const queryString =
-    "update addresses " +
-    `set street='${req.body.street}', ` +
-    `suburb='${req.body.suburb}', ` +
-    `city='${req.body.city}', ` +
-    `province='${req.body.province}', ` +
-    `postalCode=${req.body.postalCode} ` +
-    `where id = ${req.params.id}`;
-  connection.query(queryString, (error, results) => {
-    if (error) {
-      connection.connect((error) => {
-        return res.json({ status: "error", result: error });
-      });
-      return res.json({ status: "error", result: error });
-    }
-    return res.json({ status: "ok", result: results });
-  });
+exports.updateAddress = async (req, res, next) => {
+  try {
+    const address = await prisma.addresses.update({
+      where: { id: Number(req.params.id) },
+      data: {
+        street: req.body.street,
+        suburb: req.body.suburb,
+        city: req.body.city,
+        province: req.body.province,
+        postalCode: req.body.postalCode,
+      },
+    });
+    return res.json({ status: "ok", result: address });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.deleteAddress = (req, res, next) => {
-  connection.query(
-    `delete from addresses where id = ${req.params.id}`,
-    (error, results) => {
-      if (error) {
-        connection.connect((error) => {
-          return res.json({ status: "error", result: error });
-        });
-        return res.json({ status: "error", result: error });
-      }
-      return res.json({ status: "ok", result: results });
-    },
-  );
+exports.deleteAddress = async (req, res, next) => {
+  try {
+    const address = await prisma.addresses.delete({
+      where: { id: Number(req.params.id) },
+    });
+    return res.json({ status: "ok", result: address });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };

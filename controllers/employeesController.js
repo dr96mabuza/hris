@@ -1,85 +1,79 @@
-const connection = require("./../database");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 const date = require("../helpers/dateHelper");
 const dateFormarter = date.date();
 
-exports.getEmployees = (req, res, next) => {
-  connection.connect((error) => {
-    if (error) {
-      return res.json({ status: "error", result: error });
-    }
-    connection.query("select * from employees", (error, rows, fields) => {
-      if (error) return res.json({ status: "error", result: error });
-      return res.json({ status: "ok", result: rows });
-    });
-  });
+function generateUsername(name, surname) {
+  if (name.length > 1 && surname.length > 2) {
+    return `${name.splice(0, 2)}${surname.splice(0, 3)}${new Date().getFullYear()}`;
+  }
+  return `${name}${surname}${new Date().getFullYear()}`;
+}
+
+exports.getEmployees = async (req, res, next) => {
+  try {
+    const employee = await prisma.employees.findMany();
+    return res.json({ status: "ok", result: employee });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.createEmployee = (req, res, next) => {
-  const query =
-    "insert into employees " +
-    "(firstName, lastName, idNumber, gender, dateOfBirth, passwordSalt) " +
-    `values( '${req.body.firstName}', '${req.body.lastName}', '${req.body.idNumber}', ` +
-    `'${req.body.gender}', '${dateFormarter.dateToISO(req.body.dateOfBirth)}', '${req.body.passwordSalt}')`;
-  connection.connect((error) => {
-    if (error) {
-      return res.json({ status: "error", result: error });
-    }
-    connection.query(query, (error, results) => {
-      if (error) {
-        return res.json({ status: "error", result: error });
-      }
-      return res.json({ status: "ok", result: results });
-    });
-  });
-};
-
-exports.getEmployee = (req, res, next) => {
-  connection.connect((error) => {
-    if (error) {
-      return res.json({ status: "error", result: error });
-    }
-    connection.query(
-      `select * from employees where id = ${req.params.id}`,
-      (error, results) => {
-        if (error) return res.json({ status: "error", result: error });
-        return res.json({ status: "ok", result: results });
+exports.createEmployee = async (req, res, next) => {
+  try {
+    const employee = await prisma.employees.create({
+      data: {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        idNumber: req.body.idNumber,
+        gender: req.body.gender,
+        dateOfBirth: dateFormarter.dateToISO(req.body.dateOfBirth),
+        passwordSalt: "",
+        username: generateUsername(req.body.firstName, req.body.lastName),
       },
-    );
-  });
-};
-
-exports.updateEmployee = (req, res, next) => {
-  const queryString =
-    "update employees " +
-    `set firstName='${req.body.firstName}', ` +
-    `lastName='${req.body.lastName}', ` +
-    `idNumber='${req.body.idNumber}', ` +
-    `gender='${req.body.gender}', ` +
-    `dateOfBirth=${dateFormarter.dateToISO(req.body.dateOfBirth)} ` +
-    `where id = ${req.params.id}`;
-
-  connection.connect((error) => {
-    if (error) {
-      return res.json({ status: "error", result: error });
-    }
-    connection.query(queryString, (error, results) => {
-      if (error) return res.json({ status: "error", result: error });
-      return res.json({ status: "ok", result: results });
     });
-  });
+    return res.json({ status: "ok", result: employee });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.deleteEmployee = (req, res, next) => {
-  connection.connect((error) => {
-    if (error) {
-      return res.json({ status: "error", result: error });
-    }
-    connection.query(
-      `delete from employees where id = ${req.params.id}`,
-      (error, results) => {
-        if (error) return res.json({ status: "error", result: error });
-        return res.json({ status: "ok", result: results });
+exports.getEmployee = async (req, res, next) => {
+  try {
+    const employee = await prisma.employees.findFirst({
+      where: { id: Number(req.params.id) },
+    });
+    return res.json({ status: "ok", result: employee });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
+};
+
+exports.updateEmployee = async (req, res, next) => {
+  try {
+    const employee = await prisma.employees.update({
+      where: { id: Number(req.params.id) },
+      data: {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        idNumber: req.body.idNumber,
+        gender: req.body.gender,
+        dateOfBirth: dateFormarter.dateToISO(req.body.dateOfBirth),
       },
-    );
-  });
+    });
+    return res.json({ status: "ok", result: employee });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
+};
+
+exports.deleteEmployee = async (req, res, next) => {
+  try {
+    const employee = await prisma.employees.delete({
+      where: { id: Number(req.params.id) },
+    });
+    return res.json({ status: "ok", result: employee });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };

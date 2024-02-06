@@ -1,54 +1,65 @@
-const connection = require("../database");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
-exports.getCompansations = (req, res, next) => {
-  connection.query("select * from compansation", (error, rows, fields) => {
-    if (error) return res.json({ status: "error", result: error });
-    return res.json({ status: "ok", result: rows });
-  });
+exports.getCompansations = async (req, res, next) => {
+  try {
+    const compansations = await prisma.compansation.findMany();
+    return res.json({ status: "ok", result: compansations });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.createCompansation = (req, res, next) => {
-  const query =
-    "insert into compansation " +
-    "(salary, deductions, bonus, employeeId) " +
-    `values( ${req.body.salary}, ${req.body.deductions}, ${req.body.bonus}, ` +
-    ` ${req.body.employeeId})`;
-  connection.query(query, (error, results) => {
-    if (error) return res.json({ status: "error", result: error });
-    return res.json({ status: "ok", result: results });
-  });
+exports.createCompansation = async (req, res, next) => {
+  try {
+    const compansation = await prisma.compansation.create({
+      data: {
+        salary: req.body.salary,
+        deductions: req.body.deductions,
+        bonus: req.body.bonus,
+        employeeId: req.body.employeeId,
+      },
+    });
+    return res.json({ status: "ok", result: compansation });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.getCompansation = (req, res, next) => {
-  connection.query(
-    `select * from compansation where id = ${req.params.id}`,
-    (error, results) => {
-      if (error) return res.json({ status: "error", result: error });
-      return res.json({ status: "ok", result: results });
-    },
-  );
+exports.getCompansation = async (req, res, next) => {
+  try {
+    const compansation = await prisma.compansation.findFirst({
+      where: { id: Number(req.params.id) },
+    });
+    return res.json({ status: "ok", result: compansation });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.updateCompansation = (req, res, next) => {
-  const queryString =
-    "update compansation " +
-    `set salary=${req.body.salary}, ` +
-    `deductions=${req.body.deductions}, ` +
-    `bonus=${req.body.bonus} ` +
-    `where id=${req.params.id}`;
-
-  connection.query(queryString, (error, results) => {
-    if (error) return res.json({ status: "error", result: error });
-    return res.json({ status: "ok", result: results });
-  });
+exports.updateCompansation = async (req, res, next) => {
+  try {
+    const compansation = await prisma.compansation.update({
+      where: { id: Number(req.params.id) },
+      data: {
+        salary: req.body.salary,
+        deductions: req.body.deductions,
+        bonus: req.body.bonus,
+      },
+    });
+    return res.json({ status: "ok", result: compansation });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.deleteCompansation = (req, res, next) => {
-  connection.query(
-    `delete from compansation where id = ${req.params.id}`,
-    (error, results) => {
-      if (error) return res.json({ status: "error", result: error });
-      return res.json({ status: "ok", result: results });
-    },
-  );
+exports.deleteCompansation = async (req, res, next) => {
+  try {
+    const compansation = await prisma.compansation.delete({
+      where: { id: Number(req.params.id) },
+    });
+    return res.json({ status: "ok", result: compansation });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };

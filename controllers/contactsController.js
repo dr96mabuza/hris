@@ -1,55 +1,67 @@
-const connection = require("../database");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
-exports.getContacts = (req, res, next) => {
-  connection.query("select * from contacts", (error, rows, fields) => {
-    if (error) return res.json({ status: "error", result: error });
-    return res.json({ status: "ok", result: rows });
-  });
+exports.getContacts = async (req, res, next) => {
+  try {
+    const contacts = await prisma.contacts.findMany();
+    return res.json({ status: "ok", result: contacts });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.createContact = (req, res, next) => {
-  const query =
-    "insert into contacts " +
-    "(email, cellphone, companyEmail, alternateNumber, employeeId) " +
-    `values( '${req.body.email}', '${req.body.cellphone}', '${req.body.companyEmail}', ` +
-    `'${req.body.alternateNumber}', ${req.body.employeeId})`;
-  connection.query(query, (error, results) => {
-    if (error) return res.json({ status: "error", result: err });
-    return res.json({ status: "ok", result: results });
-  });
+exports.createContact = async (req, res, next) => {
+  try {
+    const contact = await prisma.contacts.create({
+      data: {
+        email: req.body.email,
+        cellphoneNumber: req.body.cellphoneNumber,
+        companyEmail: req.body.companyEmail,
+        alternateNumber: req.body.alternateNumber,
+        employeeId: req.body.employeeId,
+      },
+    });
+    return res.json({ status: "ok", result: contact });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.getContact = (req, res, next) => {
-  connection.query(
-    `select * from contacts where id = ${req.params.id}`,
-    (error, results) => {
-      if (error) return res.json({ status: "error", result: error });
-      return res.json({ status: "ok", result: results });
-    },
-  );
+exports.getContact = async (req, res, next) => {
+  try {
+    const contact = await prisma.contacts.findFirst({
+      where: { id: Number(req.params.id) },
+    });
+    return res.json({ status: "ok", result: contact });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.updateContact = (req, res, next) => {
-  const queryString =
-    "update contacts " +
-    `set email='${req.body.email}', ` +
-    `cellphoneNumber='${req.body.cellphoneNumber}', ` +
-    `companyEmail='${req.body.companyEmail}', ` +
-    `alternateNumber='${req.body.alternateNumber}' ` +
-    `where id = ${req.params.id}`;
-
-  connection.query(queryString, (error, results) => {
-    if (error) return res.json({ status: "error", result: error });
-    return res.json({ status: "ok", result: results });
-  });
+exports.updateContact = async (req, res, next) => {
+  try {
+    const contact = await prisma.contacts.update({
+      where: { id: Number(req.params.id) },
+      data: {
+        email: req.body.email,
+        cellphoneNumber: req.body.cellphoneNumber,
+        companyEmail: req.body.companyEmail,
+        alternateNumber: req.body.alternateNumber,
+      },
+    });
+    return res.json({ status: "ok", result: contact });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.deleteContact = (req, res, next) => {
-  connection.query(
-    `delete from contacts where id = ${req.params.id}`,
-    (error, results) => {
-      if (error) return res.json({ status: "error", result: error });
-      return res.json({ status: "ok", result: results });
-    },
-  );
+exports.deleteContact = async (req, res, next) => {
+  try {
+    const contact = await prisma.contacts.delete({
+      where: { id: Number(req.params.id) },
+    });
+    return res.json({ status: "ok", result: contact });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };

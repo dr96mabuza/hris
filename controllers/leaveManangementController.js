@@ -1,56 +1,78 @@
-const connection = require("../database");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 const date = require("../helpers/dateHelper");
 const dateFormatter = date.date();
 
-exports.getLeaves = (req, res) => {
-  connection.query("select * from leaves", (error, rows, fields) => {
-    if (error) {
-      return res.json({ status: "error", result: error });
-    }
-    return res.json({ status: "ok", result: rows });
-  });
+exports.getLeaves = async (req, res, next) => {
+  try {
+    const leave = await prisma.leaves.findMany();
+    return res.json({ status: "ok", result: leave });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.createLeave = (req, res, next) => {
-  const query =
-    "insert into leaves " +
-    "INSERT INTO leaves (leave_type, reason, start_date, end_date, days_absent, employee_id, approval) " +
-    `values( '${req.body.leave_type}', '${req.body.reason}', '${dateFormatter.dateToISO(req.body.start_date)}', '${dateFormatter.dateToISO(req.body.end_date)}', ${req.body.employeeId}, '${req.body.approval}')`;
-  connection.query(query, (error, results) => {
-    if (error) return res.json({ status: "error", result: error });
-    return res.json({ status: "ok", result: results });
-  });
+exports.createLeave = async (req, res, next) => {
+  try {
+    const leave = await prisma.leaves.create({
+      data: {
+        leave_type: req.body.leave_type,
+        reason: req.body.reason,
+        start_date: dateFormatter.dateToISO(req.body.start_date),
+        end_date: dateFormatter.dateToISO(req.body.end_date),
+        days_absent: dateFormatter.getDaysDifference(
+          req.body.start_date,
+          req.body.end_date,
+        ),
+        employee_id: req.body.employeeId,
+        approval: req.body.approval,
+      },
+    });
+    return res.json({ status: "ok", result: leave });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.getLeave = (req, res, next) => {
-  connection.query(
-    `select * from leaves where leave_id = ${req.params.id}`,
-    (error, results) => {
-      if (error) return res.json({ status: "error", result: error });
-      return res.json({ status: "ok", result: results });
-    },
-  );
+exports.getLeave = async (req, res, next) => {
+  try {
+    const leave = await prisma.leaves.findFirst({
+      where: { leave_id: Number(req.params.id) },
+    });
+    return res.json({ status: "ok", result: leave });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.updateLeave = (req, res, next) => {
-  const queryString =
-    "update leaves " +
-    `set (leave_type, reason, start_date, end_date, days_absent, approval)` +
-    `values( '${req.body.leave_type}', '${req.body.reason}', '${dateFormatter.dateToISO(req.body.start_date)}', '${dateFormatter.dateToISO(req.body.end_date)}', ${req.body.approval}`;
-  `where id = ${req.params.id}`;
-
-  connection.query(queryString, (error, results) => {
-    if (error) return res.json({ status: "error", result: error });
-    return res.json({ status: "ok", result: results });
-  });
+exports.updateLeave = async (req, res, next) => {
+  try {
+    const leave = await prisma.leaves.create({
+      data: {
+        leave_type: req.body.leave_type,
+        reason: req.body.reason,
+        start_date: dateFormatter.dateToISO(req.body.start_date),
+        end_date: dateFormatter.dateToISO(req.body.end_date),
+        days_absent: dateFormatter.getDaysDifference(
+          req.body.start_date,
+          req.body.end_date,
+        ),
+        approval: req.body.approval,
+      },
+    });
+    return res.json({ status: "ok", result: leave });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };
 
-exports.deleteLeave = (req, res, next) => {
-  connection.query(
-    `delete from leaves where id = ${req.params.id}`,
-    (error, results) => {
-      if (error) return res.json({ status: "error", result: error });
-      return res.json({ status: "ok", result: results });
-    },
-  );
+exports.deleteLeave = async (req, res, next) => {
+  try {
+    const leave = await prisma.leaves.delete({
+      where: { leave_id: Number(req.params.id) },
+    });
+    return res.json({ status: "ok", result: leave });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 };

@@ -1,4 +1,4 @@
-const { formatISO, format } = require("date-fns");
+const { formatISO, format, differenceInDays } = require("date-fns");
 
 const date = () => {
   const dateToISO = (date) => {
@@ -9,7 +9,11 @@ const date = () => {
     return format(iso, "dd/MM/yyyy");
   };
 
-  return { dateToISO, ISOToDate };
+  const getDaysDifference = (start, end) => {
+    return differenceInDays(start, end);
+  };
+
+  return { dateToISO, ISOToDate, getDaysDifference };
 };
 
 exports.date = date;
