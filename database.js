@@ -15,10 +15,7 @@ connection.connect((error) => {
   }
 });
 
-// connection.query("INSERT INTO leaves (leave_type, reason, start_date, end_date, days_absent, employee_id, approval) "+
-// "VALUES" +
-// "('Vacation', 'Annual vacation', '2022-05-01', '2022-05-05', 5, 1, true)," +
-// "('Sick Leave', 'Flu', '2022-06-10', '2022-06-15', 6, 2, false);"
+// connection.query("Alter TABLE `documents` MODIFY COLUMN `document` VARCHAR(255) "
 // , (error, results) => {
 //     if (error) {
 //         console.log(error)

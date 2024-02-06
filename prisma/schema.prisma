@@ -46,7 +46,7 @@ model contacts {
 model documents {
   id           Int        @id @default(autoincrement())
   documentName String?    @db.VarChar(255)
-  document     Bytes?     @db.Blob
+  document     String    @db.VarChar(255)
   employeeId   Int?
   type         String?    @db.VarChar(255)
   employees    employees? @relation(fields: [employeeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "documents_ibfk_1")
@@ -68,7 +68,6 @@ model employees {
   documents                                                 documents[]
   employmentDetails_employmentDetails_reportsToToemployees  employmentDetails[] @relation("employmentDetails_reportsToToemployees")
   employmentDetails_employmentDetails_employeeIdToemployees employmentDetails[] @relation("employmentDetails_employeeIdToemployees")
-  leaveManagement                                           leaveManagement[]
   leaves                                                    leaves[]
 }
 

@@ -5,7 +5,7 @@ var logger = require("morgan");
 const cors = require("cors");
 // const passport = require("passport");
 // var JwtStrategy = require("passport-jwt").Strategy,
-  // ExtractJwt = require("passport-jwt").ExtractJwt;
+// ExtractJwt = require("passport-jwt").ExtractJwt;
 // var opts = {};
 // opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 // opts.secretOrKey = "secret";
@@ -32,21 +32,21 @@ app.use(cors());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // passport.use(
-  // new JwtStrategy(opts, (jwt_payload, done) => {
-    // connection.connect((error) => {
-      // if (error) return done(err, false);
-      // connection.query(
-        // `select * from employees where id = ${jwt_payload.sub}`,
-        // (error, results) => {
-          // if (error) return done(err, false);
-          // if (results.length > 0) {
-            // return done(null, results);
-          // }
-          // return done(null, false);
-        // },
-      // );
-    // });
-  // }),
+// new JwtStrategy(opts, (jwt_payload, done) => {
+// connection.connect((error) => {
+// if (error) return done(err, false);
+// connection.query(
+// `select * from employees where id = ${jwt_payload.sub}`,
+// (error, results) => {
+// if (error) return done(err, false);
+// if (results.length > 0) {
+// return done(null, results);
+// }
+// return done(null, false);
+// },
+// );
+// });
+// }),
 // );
 
 app.use("/", [
