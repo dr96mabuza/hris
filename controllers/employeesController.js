@@ -5,7 +5,7 @@ const dateFormarter = date.date();
 
 function generateUsername(name, surname) {
   if (name.length > 1 && surname.length > 2) {
-    return `${name.splice(0, 2)}${surname.splice(0, 3)}${new Date().getFullYear()}`;
+    return `${name.slice(0, 2)}${surname.slice(0, 3)}${new Date().getFullYear()}`;
   }
   return `${name}${surname}${new Date().getFullYear()}`;
 }
@@ -27,9 +27,12 @@ exports.createEmployee = async (req, res, next) => {
         lastName: req.body.lastName,
         idNumber: req.body.idNumber,
         gender: req.body.gender,
-        dateOfBirth: dateFormarter.dateToISO(req.body.dateOfBirth),
+        dateOfBirth: req.body.dateOfBirth,
         passwordSalt: "",
-        username: generateUsername(req.body.firstName, req.body.lastName),
+        username: generateUsername(
+          req.body.firstName.toLowerCase(),
+          req.body.lastName.toLowerCase(),
+        ),
       },
     });
     return res.json({ status: "ok", result: employee });

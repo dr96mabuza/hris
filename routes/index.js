@@ -3,47 +3,53 @@ var router = express.Router();
 const mysql = require("mysql2");
 const connection = require("../database");
 
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt")
+
+
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  const connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    port: 3306,
-    database: "hris",
-  });
+router.get("/", async (req, res, next) => {
+  try {
+    const employee = await prisma.employees.findMany();
+    return res.json({ status: "ok", result: employee });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
+});
 
-  connection.connect((error) => {
-    if (error instanceof Error) {
-      res.json(error);
-    }
-    connection.query("select * from employees", (error, rows, fields) => {
-      if (error) {
-        res.send(error);
-      }
-      connection.end();
-      res.json(rows);
+router.post("/login", async (req, res, next) => {
+  try {
+    const employee = await prisma.employees.findFirst({
+      where: { username: req.body.username },
     });
-  });
-});
-
-router.post("/login", (req, res, next) => {
-  connection.query(
-    `select email from contacts where email=${req.body.email}`,
-    (error, results) => {
-      if (error) {
-        res.json({ status: "error", result: error });
-      }
-    },
-  );
-});
-
-router.post("/signup", (req, res) => {
-  connection.query("", (error, results) => {
-    if (error) {
-      res.json({ status: "error", result: error });
+    const match = await bcrypt.compare(req.body.password, employee.passwordSalt);
+    if (match) {
+      const token = jwt.sign({ employee: employee }, 'shhhhh');
+      return res.json({ status: "ok", result: {"token": token} });
     }
-  });
+    return res.json({ status: "error", result: "user not found" });
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
+});
+
+router.post("/signup", async (req, res, next) => {
+  try {
+    const employee = await prisma.employees.update({
+      where: { id: (await prisma.employees.findFirst({
+        where: {username: req.body.username}
+      })).id },
+      data: {
+        passwordSalt: await bcrypt.hash(req.body.passwordConfirm, 10),
+      }
+    });
+    return res.json({ status: "ok", result: employee });
+    
+  } catch (error) {
+    return res.json({ status: "error", result: error });
+  }
 });
 
 router.post("/search", (req, res) => {

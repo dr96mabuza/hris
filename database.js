@@ -15,7 +15,6 @@ connection.connect((error) => {
   }
 });
 
-
 // connection.query("ALTER TABLE employees ADD username varchar(255) "
 // , (error, results) => {
 //     if (error) {
