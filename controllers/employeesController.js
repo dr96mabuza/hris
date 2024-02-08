@@ -10,10 +10,21 @@ function generateUsername(name, surname) {
   return `${name}${surname}${new Date().getFullYear()}`;
 }
 
+function exclude(user, keys) {
+  return Object.fromEntries(
+    Object.entries(user).filter(([key]) => !keys.includes(key)),
+  );
+}
+
 exports.getEmployees = async (req, res, next) => {
   try {
-    const employee = await prisma.employees.findMany();
-    return res.json({ status: "ok", result: employee });
+    const employees = await prisma.employees.findMany();
+    return res.json({
+      status: "ok",
+      result: employees.map((employee) => {
+        return exclude(employee, ["passwordSalt"]);
+      }),
+    });
   } catch (error) {
     return res.json({ status: "error", result: error });
   }
@@ -27,7 +38,7 @@ exports.createEmployee = async (req, res, next) => {
         lastName: req.body.lastName,
         idNumber: req.body.idNumber,
         gender: req.body.gender,
-        dateOfBirth: req.body.dateOfBirth,
+        dateOfBirth: dateFormarter.idToDate((req.body.idNumber).slice(0, 6)),
         passwordSalt: "",
         username: generateUsername(
           req.body.firstName.toLowerCase(),
@@ -46,7 +57,10 @@ exports.getEmployee = async (req, res, next) => {
     const employee = await prisma.employees.findFirst({
       where: { id: Number(req.params.id) },
     });
-    return res.json({ status: "ok", result: employee });
+    return res.json({
+      status: "ok",
+      result: exclude(employee, ["passwordSalt"]),
+    });
   } catch (error) {
     return res.json({ status: "error", result: error });
   }
