@@ -3,15 +3,6 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
-// const passport = require("passport");
-// var JwtStrategy = require("passport-jwt").Strategy,
-// ExtractJwt = require("passport-jwt").ExtractJwt;
-// var opts = {};
-// opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-// opts.secretOrKey = "secret";
-// opts.issuer = "https://hris-qp6t.onrender.com";
-// opts.audience = "https://delightful-cajeta-c7d19a.netlify.app/";
-// import serverless from "serverless-http";
 
 var indexRouter = require("./routes/index");
 var employeesRouter = require("./routes/employeesRoutes");
@@ -23,42 +14,31 @@ const employmentDetailsRouter = require("./routes/employmentDetailsRoutes");
 const leaveRouter = require("./routes/leaveRoutes");
 
 var app = express();
+const jwt = require("jsonwebtoken");
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
-// app.use(express.static(path.join(__dirname, 'public')));
 
-// passport.use(
-// new JwtStrategy(opts, (jwt_payload, done) => {
-// connection.connect((error) => {
-// if (error) return done(err, false);
-// connection.query(
-// `select * from employees where id = ${jwt_payload.sub}`,
-// (error, results) => {
-// if (error) return done(err, false);
-// if (results.length > 0) {
-// return done(null, results);
-// }
-// return done(null, false);
-// },
-// );
-// });
-// }),
-// );
+const verifyToken = (req, res, next) => {
+  if (req.path === "/login" || req.path === "/signup") next();
+  const token = req.headers["authorization"].split(" ").pop();
+  jwt.verify(token, "secret25", (err, result) => {
+    if (err) return res.json({ status: "error", result: err });
+    next();
+  });
+};
 
-app.use("/", [
-  indexRouter,
-  addressesRouter,
-  employeesRouter,
-  compansationRouter,
-  contactsRouter,
-  documentsRouter,
-  employmentDetailsRouter,
-  leaveRouter,
-]);
+app.use("/", indexRouter);
+app.use("/", verifyToken, addressesRouter);
+app.use("/", verifyToken, employeesRouter);
+app.use("/", verifyToken, compansationRouter);
+app.use("/", verifyToken, contactsRouter);
+app.use("/", verifyToken, documentsRouter);
+app.use("/", verifyToken, employmentDetailsRouter);
+app.use("/", verifyToken, leaveRouter);
 
 app.use((err, req, res, next) => {
   if (err instanceof Error) {

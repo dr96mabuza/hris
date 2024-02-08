@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const date = require("../helpers/dateHelper");
 const dateFormarter = date.date();
+const jwt = require("jsonwebtoken");
 
 function generateUsername(name, surname) {
   if (name.length > 1 && surname.length > 2) {
@@ -38,7 +39,7 @@ exports.createEmployee = async (req, res, next) => {
         lastName: req.body.lastName,
         idNumber: req.body.idNumber,
         gender: req.body.gender,
-        dateOfBirth: dateFormarter.idToDate((req.body.idNumber).slice(0, 6)),
+        dateOfBirth: dateFormarter.idToDate(req.body.idNumber.slice(0, 6)),
         passwordSalt: "",
         username: generateUsername(
           req.body.firstName.toLowerCase(),

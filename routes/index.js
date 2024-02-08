@@ -8,6 +8,12 @@ const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+function exclude(user, keys) {
+  return Object.fromEntries(
+    Object.entries(user).filter(([key]) => !keys.includes(key)),
+  );
+}
+
 /* GET home page. */
 router.get("/", async (req, res, next) => {
   try {
@@ -34,10 +40,11 @@ router.post("/login", async (req, res, next) => {
       employee.passwordSalt,
     );
     if (match) {
-      const token = jwt.sign({ employee: employee }, "shhhhh");
+      const token = jwt.sign({ employee: exclude(employee, ["passwordSalt"]) }, "secret25");
+      req.user = exclude(employee, ["passwordSalt"]);
       return res.json({
         status: "ok",
-        result: { token: token, employee: employee },
+        result: { token: token, employee: exclude(employee, ["passwordSalt"]) },
       });
     }
     return res.json({
@@ -63,7 +70,10 @@ router.post("/signup", async (req, res, next) => {
         passwordSalt: await bcrypt.hash(req.body.passwordConfirm, 10),
       },
     });
-    return res.json({ status: "ok", result: {message: "registration complete"} });
+    return res.json({
+      status: "ok",
+      result: { message: "registration complete" },
+    });
   } catch (error) {
     return res.json({ status: "error", result: error });
   }
