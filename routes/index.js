@@ -17,8 +17,11 @@ function exclude(user, keys) {
 /* GET home page. */
 router.get("/", async (req, res, next) => {
   try {
-    const employee = await prisma.employees.findMany();
-    return res.json({ status: "ok", result: employee });
+    const counts = {
+      employeeCount: await prisma.employees.count(),
+      leaveCount: await prisma.leaves.count(),
+    };
+    return res.json({ status: "ok", result: counts });
   } catch (error) {
     return res.json({ status: "error", result: error });
   }
@@ -40,7 +43,10 @@ router.post("/login", async (req, res, next) => {
       employee.passwordSalt,
     );
     if (match) {
-      const token = jwt.sign({ employee: exclude(employee, ["passwordSalt"]) }, "secret25");
+      const token = jwt.sign(
+        { employee: exclude(employee, ["passwordSalt"]) },
+        "secret25",
+      );
       req.user = exclude(employee, ["passwordSalt"]);
       return res.json({
         status: "ok",

@@ -1,19 +1,20 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
 const cors = require("cors");
 
-var indexRouter = require("./routes/index");
-var employeesRouter = require("./routes/employeesRoutes");
+const indexRouter = require("./routes/index");
+const employeesRouter = require("./routes/employeesRoutes");
 const addressesRouter = require("./routes/addressesRoutes");
 const compansationRouter = require("./routes/compansationRoutes");
 const contactsRouter = require("./routes/contactsRoutes");
 const documentsRouter = require("./routes/documentRoutes");
 const employmentDetailsRouter = require("./routes/employmentDetailsRoutes");
 const leaveRouter = require("./routes/leaveRoutes");
+const profileRouter = require("./routes/profileRoutes");
 
-var app = express();
+const app = express();
 const jwt = require("jsonwebtoken");
 
 app.use(logger("dev"));
@@ -39,6 +40,7 @@ app.use("/", verifyToken, contactsRouter);
 app.use("/", verifyToken, documentsRouter);
 app.use("/", verifyToken, employmentDetailsRouter);
 app.use("/", verifyToken, leaveRouter);
+app.use("/", verifyToken, profileRouter);
 
 app.use((err, req, res, next) => {
   if (err instanceof Error) {
