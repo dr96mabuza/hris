@@ -1,11 +1,12 @@
 const mysql = require("mysql2");
+require('dotenv').config();
 
 const connection = mysql.createConnection({
-  host: "mysql-1d05d6da-dr96mabuza-d0a4.a.aivencloud.com",
-  user: "avnadmin",
-  password: "AVNS_9j8E2X6yQh9ZQfZz1A4",
-  port: 19586,
-  database: "hr-management-db",
+  host: process.env.host,
+  user: process.env.user,
+  password: process.env.password,
+  port: process.env.port,
+  database: process.env.database,
 });
 
 connection.connect((error) => {
