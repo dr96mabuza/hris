@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const documentsController = require("./../controllers/documentsController");
+const documentsController = require("./../controllers/documents.controller");
 
 /* 
   "/document/create"

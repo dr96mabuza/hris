@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const leaveController = require("./../controllers/leaveManangementController");
+const leaveController = require("../controllers/leaveManangement.controller");
 
 /* 
   "/leave/create"

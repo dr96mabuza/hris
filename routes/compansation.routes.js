@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const compansationController = require("../controllers/compansationController");
+const compansationController = require("../controllers/compansation.controller");
 
 /* 
   "/compansation/create"

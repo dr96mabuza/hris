@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const contactsController = require("./../controllers/contactsController");
+const contactsController = require("./../controllers/contacts.controller");
 /* 
   "/contacts/create"
     * 'post' to add new contacts

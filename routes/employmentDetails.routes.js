@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const employmentDetailsController = require("./../controllers/employmentDetailsController");
+const employmentDetailsController = require("../controllers/employmentDetails.controller");
 
 /* 
   "/employmentdetail/create"

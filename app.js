@@ -5,14 +5,14 @@ const logger = require("morgan");
 const cors = require("cors");
 
 const indexRouter = require("./routes/index");
-const employeesRouter = require("./routes/employeesRoutes");
-const addressesRouter = require("./routes/addressesRoutes");
-const compansationRouter = require("./routes/compansationRoutes");
-const contactsRouter = require("./routes/contactsRoutes");
-const documentsRouter = require("./routes/documentRoutes");
-const employmentDetailsRouter = require("./routes/employmentDetailsRoutes");
-const leaveRouter = require("./routes/leaveRoutes");
-const profileRouter = require("./routes/profileRoutes");
+const employeesRouter = require("./routes/employees.routes");
+const addressesRouter = require("./routes/addresses.routes");
+const compansationRouter = require("./routes/compansation.routes");
+const contactsRouter = require("./routes/contacts.routes");
+const documentsRouter = require("./routes/document.routes");
+const employmentDetailsRouter = require("./routes/employmentDetails.routes");
+const leaveRouter = require("./routes/leave.routes");
+const profileRouter = require("./routes/profile.routes");
 
 const app = express();
 const jwt = require("jsonwebtoken");
